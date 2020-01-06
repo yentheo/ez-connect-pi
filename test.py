@@ -83,32 +83,20 @@ def listening(client_socket):
 
 def start_accept(server_socket):
     print('starting accept')
-    try:
-        client, clientInfo = server_socket.accept()
-        print('accepted client')
-        time.sleep(.2)
-        listening(client)
-    except:
-        print('accept error', traceback.format_exc())
-        print('closing client')
-        client.close()
-        start_accept(server_socket)
+    client, clientInfo = server_socket.accept()
+    print('accepted client')
+    time.sleep(.2)
+    listening(client)
 
 
 def start_server():
     print('starting server')
-    try:
-        port = 3
-        backlog = 1
-        s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-        s.bind(('', bluetooth.PORT_ANY))
-        s.listen(backlog)
-        start_accept(s)
-    except:
-        print('server error', traceback.format_exc())
-        print('closing accept')
-        s.close()
-        start_server()
+    port = 3
+    backlog = 1
+    s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+    s.bind(('', 1))
+    s.listen(backlog)
+    start_accept(s)
 
 
 threading.Thread(target=start_server).start()
