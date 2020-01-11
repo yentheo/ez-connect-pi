@@ -12,7 +12,10 @@ import time
 from bt_utils import bluetooth_mac_address
 from wifi_utils import get_current_connected_wifi, connect_to_wifi
 
-subprocess.call(['sudo', 'hciconfig', 'hci0', 'piscan'])
+print('test')
+
+def start_bluetooth():
+    subprocess.call(['hciconfig', 'hci0', 'piscan'])
 
 
 def recv_timeout(the_socket, timeout=2):
@@ -82,11 +85,14 @@ def listening(client_socket):
 
 
 def start_accept(server_socket):
-    print('starting accept')
-    client, clientInfo = server_socket.accept()
-    print('accepted client')
-    time.sleep(.2)
-    listening(client)
+    try:
+        print('starting accept')
+        client, clientInfo = server_socket.accept()
+        print('accepted client')
+        time.sleep(.2)
+        listening(client)
+    except:
+        start_accept(server_socket)
 
 
 def start_server():
@@ -98,5 +104,6 @@ def start_server():
     s.listen(backlog)
     start_accept(s)
 
-
+threading.Thread(target=start_bluetooth).start()
+time.sleep(5)
 threading.Thread(target=start_server).start()

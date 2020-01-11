@@ -1,0 +1,12 @@
+[Unit]
+Description=EZ Connect Service
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/pi/code/ez-connect-pi/ez_connect_bt_server.py
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target
